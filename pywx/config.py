@@ -38,6 +38,10 @@ WX_SYNC_URL = os.path.join(WX_BASE_URL, WX_CGI_PATH, 'webwxsync')
 WX_GET_CONTACT_URL = os.path.join(WX_BASE_URL, WX_CGI_PATH, 'webwxgetcontact')
 WX_BATCH_GET_CONTACTS_URL = os.path.join(WX_BASE_URL, WX_CGI_PATH, 'webwxbatchgetcontact')
 WX_SYNC_CHECK_URL = os.path.join(WX_WEBPUSH_URL, WX_CGI_PATH, 'synccheck')
+WX_SEND_TEXT_MESSAGE_URL = os.path.join(WX_BASE_URL, WX_CGI_PATH, 'webwxsendmsg')
+WX_SEND_IMG_MESSAGE_URL = os.path.join(WX_BASE_URL, WX_CGI_PATH, 'webwxsendmsgimg')
+WX_SEND_EMOTION_MESSAGE_URL = os.path.join(WX_BASE_URL, WX_CGI_PATH, 'webwxsendemoticon')
+WX_SEND_APPMSG_MESSAGE_URL = os.path.join(WX_BASE_URL, WX_CGI_PATH, 'webwxsendappmsg')
 
 
 # Regex
