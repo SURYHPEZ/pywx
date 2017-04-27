@@ -15,10 +15,11 @@ from PIL import Image
 
 from pywx import config
 from pywx.models import (
-    User, Contact, ContactSet
+    User, Contact, ContactSet, Message
 )
 from pywx.utils import (
-    chunks, gen_device_id, timestamp_now, bitwise_not
+    chunks, gen_device_id, timestamp_now, bitwise_not,
+    gen_client_msg_id
 )
 
 
@@ -288,6 +289,32 @@ class WXClient(object):
         for contact in contacts:
             contact = Contact.from_wx_contact(self, contact)
             self.contacts.add_or_update(contact)
+
+    def send_text(self, content, to_contact):
+        message = Message(
+            content=content, type=config.MessageType.TEXT.value,
+            from_username=self.user.username, to_username=to_contact.username
+        )
+        return self._send_message(message)
+
+    def _send_message(self, message):
+        params = {'pass_ticket': self.pass_ticket}
+        data = self._gen_base_request()
+        local_id = gen_client_msg_id()
+        data.update({
+            'Msg': {
+                'ClientMsgId': local_id,
+                'Content': message.content,
+                'FromUserName': message.from_username,
+                'ToUserName': message.to_username,
+                'LocalID': local_id,
+                'Type': message.type
+            },
+            'Scene': 0
+        })
+        send_message_api = config.WX_SEND_TEXT_MESSAGE_URL
+        res = self.session.post(send_message_api, params=params, json=data)
+        return res
 
     def _gen_base_request(self):
         return {

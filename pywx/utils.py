@@ -29,6 +29,10 @@ def gen_device_id():
     return 'e%s' % int(random.random() * 1e15)
 
 
+def gen_client_msg_id():
+    return '%d%04d' % (int(time.time() * 1000), int(random.random() * 1e4))
+
+
 def is_chatroom(member):
     return member['Sex'] == 0 and RE_CHATROOM_USERNAME_PATTERN.match(member['UserName'])
 
