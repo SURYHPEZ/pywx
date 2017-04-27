@@ -14,12 +14,12 @@ with open('README.md', 'r') as fd:
 
 setup(
     name='pywx',
-    version='version',
+    version=version,
     description='Wechat Python Client',
     long_description=readme,
     author='SURYHPEZ',
     author_email='yy19899819@gmail.com',
-    url='https://github.com/SURYHPEZ/pywx.git',
+    url='https://github.com/SURYHPEZ/pywx',
     packages=find_packages(),
     include_package_data=True,
     license='MIT',
