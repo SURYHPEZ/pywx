@@ -147,3 +147,14 @@ class ContactSet(object):
 
     def remove(self, contact):
         return self._contacts.pop(contact.username)
+
+
+class Message(object):
+
+    def __init__(self, content, type, from_username, to_username, media_id=None, message_id=None):
+        self.content = content
+        self.type = type
+        self.from_username = from_username
+        self.to_username = to_username
+        self.media_id = media_id
+        self.message_id = message_id
