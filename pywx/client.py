@@ -277,8 +277,17 @@ class WXClient(object):
             message_type = self.MESSAGE_HANDLERS.get(message['MsgType'])
             if not message_type:
                 continue
-            message_handler = getattr(self, '_process_%s_message' % message_type)
-            message_handler(message)
+            message_handler = getattr(self, '_process_%s_message' % message_type, None)
+            if not message_handler:
+                self._process_unsupport_message(message)
+            else:
+                message_handler(message)
+
+    def _process_unsupport_message(self, message):
+        from_username = message['FromUserName']
+        from_contact = self.contacts[from_username]
+
+        print 'From: %s, 目前不支持该消息的显示，请在手机查看' % from_contact.nickname
 
     def _process_statusnotify_message(self, message):
         if config.StatusNotifyCode.SYNC_CONV != message['StatusNotifyCode']:
