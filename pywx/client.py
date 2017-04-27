@@ -15,11 +15,11 @@ from PIL import Image
 
 from pywx import config
 from pywx.models import (
-    User, Contact, ContactSet, Message
+    User, Contact, ChatroomContact, ContactSet, Message,
 )
 from pywx.utils import (
     chunks, gen_device_id, timestamp_now, bitwise_not,
-    gen_client_msg_id
+    gen_client_msg_id, emoji_formatter
 )
 
 
@@ -289,6 +289,22 @@ class WXClient(object):
         for contact in contacts:
             contact = Contact.from_wx_contact(self, contact)
             self.contacts.add_or_update(contact)
+
+    def _process_text_message(self, message):
+        content = emoji_formatter(message['Content'])
+        to_username = message['ToUserName']
+        to_contact = self.contacts[to_username]
+        from_username = message['FromUserName']
+        from_contact = self.contacts[from_username]
+
+        if isinstance(from_contact, ChatroomContact):
+            member_username, content = content.split(':<br/>')
+            member_contact = self.contacts[member_username]
+            print 'From: %s[%s], To: %s, Msg: %s' % (
+                from_contact.nickname, member_contact.nickname, to_contact.nickname, content
+            )
+        else:
+            print 'From: %s, To: %s, Msg: %s' % (from_contact.nickname, to_contact.nickname, content)
 
     def send_text(self, content, to_contact):
         message = Message(
