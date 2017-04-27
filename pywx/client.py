@@ -27,6 +27,11 @@ logger = logging.getLogger(__name__)
 
 class WXClient(object):
 
+    MESSAGE_HANDLERS = {
+        item.value: item.name.lower()
+        for item in config.MessageType
+    }
+
     def __init__(self):
         self._online = False
         self.session = requests.Session()
@@ -268,13 +273,13 @@ class WXClient(object):
 
     def _process_messages(self, messages):
         for message in messages:
-            message_type = config.MESSAGE_TYPE.get(message['MsgType'])
+            message_type = self.MESSAGE_HANDLERS.get(message['MsgType'])
             if not message_type:
                 continue
             message_handler = getattr(self, '_process_%s_message' % message_type)
             message_handler(message)
 
-    def _process_system_message(self, message):
+    def _process_statusnotify_message(self, message):
         if config.StatusNotifyCode.SYNC_CONV != message['StatusNotifyCode']:
             return
         usernames = message['StatusNotifyUserName'].split(',')

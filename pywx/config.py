@@ -59,9 +59,25 @@ class StatusNotifyCode(enum.IntEnum):
     QUIT_SESSION = 5
 
 
-MESSAGE_TYPE = {
-    51: 'system'
-}
+class MessageType(enum.IntEnum):
+    TEXT = 1
+    IMAGE = 3
+    APPMSG = 6
+    VOICE = 34
+    VIDEO = 43
+    MICROVIDEO = 62
+    EMOTICON = 47
+    APP = 49
+    VOIPMSG = 50
+    VOIPNOTIFY = 52
+    VOIPINVITE = 53
+    LOCATION = 48
+    STATUSNOTIFY = 51
+    SYSNOTICE = 9999
+    POSSIBLEFRIEND_MSG = 40
+    VERIFYMSG = 37
+    SHARECARD = 42
+    SYS = 1e4
 
 
 # Logging
